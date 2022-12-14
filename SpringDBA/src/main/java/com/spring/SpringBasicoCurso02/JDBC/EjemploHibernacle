@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.password">1234</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/test</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+
+        <mapping class="com.util.Product"/>
+    </session-factory>
+</hibernate-configuration
+entity class
+@Entity
+@Table(name="productdetails")
+public class Product implements Serializable {
+
+    @Id
+    @Column(name="product-id")
+    private int id;
+    @Column(name="product-name")
+    private String name;
+    @Column(name="product-description")
+    private String description;
+    @Column(name="product-price")
+    private float price;
+    public Product() {
+        super();
+    }
+
+    public Product(int id, String name, String description, float price) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public float getPrice() {
+        return price;
+    }
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+}
+
+public class Executingclass {
+    public static void  main(String args[]) {
+        SessionFactory  sessionFactory=Hibernateutil.getSessionFactory();
+        Session session=sessionFactory.openSession();
+        Product product=(Product)session.get(Product.class, 1);
+        System.out.println(product.getId());
+        System.out.println(product.getName());
+        System.out.println(product.getDescription());
+        System.out.println(product.getPrice());
+
+
+    }
+
+}
+
+public class Hibernateutil {
+    static SessionFactory sessionFactory=null;
+    static{
+        Configuration configuration=new Configuration();
+        configuration.configure();
+
+        ServiceRegistry serviceRegistry=new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
+        sessionFactory=configuration.buildSessionFactory(serviceRegistry);
+    }
+
+    public static SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+}
